@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using MetaWear.Sensors;
+using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace MetaWear.Android
@@ -6,38 +7,12 @@ namespace MetaWear.Android
     public class MetaWearManager : IMetaWearManager
     {
         private static string TAG = "Android.MetaWearManager";
-
-        class DeviceCallback : AndroidJavaProxy
-        {
-            private IDeviceHandler deviceHandler;
-
-            public DeviceCallback (IDeviceHandler deviceHandler) : base ("de.horizont.metawearunity.IDeviceHandler")
-            {
-                this.deviceHandler = deviceHandler;
-            }
-
-            public void OnNewDevice (AndroidJavaObject device)
-            {
-                Debug.unityLogger.Log (TAG, "OnNewDevice");
-                deviceHandler.OnNewDevice (
-                    new BluetoothDevice (
-                        device.Call<string> ("getAddress"),
-                        device.Call<string> ("getName")));
-            }
-        }
-
         private AndroidJavaObject activity;
 
         public MetaWearManager ()
         {
             AndroidJavaClass jc = new AndroidJavaClass ("com.unity3d.player.UnityPlayer");
             activity = jc.GetStatic<AndroidJavaObject> ("currentActivity");
-        }
-
-        public void ScanDevices (IDeviceHandler deviceHandler, long timeout)
-        {
-            Debug.unityLogger.Log (TAG, "ScanDevices");
-            activity.Call ("ScanDevices", true, new DeviceCallback (deviceHandler), timeout);
         }
 
         public IBoard GetBoard (BluetoothDevice bluetoothDevice)
@@ -69,6 +44,24 @@ namespace MetaWear.Android
 
             return new Accelerometer (
                 activity.Call<AndroidJavaObject> ("GetAcceleromenter", GetBoard (board).NativeBoard));
+        }
+
+        public IMagnetometer GetMagnetometer (IBoard board)
+        {
+            return new Magnetometer (
+                activity.Call<AndroidJavaObject> ("GetMagnetometer", GetBoard (board).NativeBoard));
+        }
+
+        public IGyro GetGyro (IBoard board)
+        {
+            return new Gyro (
+                activity.Call<AndroidJavaObject> ("GetGyro", GetBoard (board).NativeBoard));
+        }
+
+        public ILight GetLight (IBoard board)
+        {
+            return new Light (
+                activity.Call<AndroidJavaObject> ("GetLight", GetBoard (board).NativeBoard));
         }
 
         private Board GetBoard (IBoard board)

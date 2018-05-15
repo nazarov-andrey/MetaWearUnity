@@ -1,9 +1,10 @@
 ﻿using System;
 using MetaWear;
+using MetaWear.Sensors;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EntryPoint : MonoBehaviour, IDeviceHandler, IAccelerometerHandler
+public class EntryPoint : MonoBehaviour, IAccelerometerHandler
 {
     private static string TAG = "EntryPoint";
 
@@ -21,18 +22,6 @@ public class EntryPoint : MonoBehaviour, IDeviceHandler, IAccelerometerHandler
     private void Awake ()
     {
         manager = new MetaWearManager ();
-    }
-
-    public void OnNewDevice (BluetoothDevice device)
-    {
-        Debug.unityLogger.Log (TAG, "OnNewDevice " + device.MacAddress + " " + device.Name);
-        devicesText.text += device + "\n";
-    }
-
-    public void Scan ()
-    {
-        Debug.unityLogger.Log (TAG, "Scan button click");
-        manager.ScanDevices (this);
     }
 
     public void Connect ()

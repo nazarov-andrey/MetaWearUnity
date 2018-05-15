@@ -1,6 +1,6 @@
-﻿namespace MetaWear
+﻿namespace MetaWear.Sensors
 {
-    public interface IAccelerometerHandler
+    public interface IGyroHandler
     {
         void OnNewValue (float x, float y, float z);
     }

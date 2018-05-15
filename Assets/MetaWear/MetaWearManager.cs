@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using MetaWear.Sensors;
+using UnityEngine;
 
 namespace MetaWear
 {
@@ -12,11 +13,6 @@ namespace MetaWear
                 metaWearManager = new Android.MetaWearManager ();
             else
                 metaWearManager = new Stub.MetaWearManager();
-        }
-
-        public void ScanDevices (IDeviceHandler deviceHandler, long timeout = 10000)
-        {
-            metaWearManager.ScanDevices (deviceHandler, timeout);
         }
 
         public IBoard GetBoard (BluetoothDevice bluetoothDevice)
@@ -37,6 +33,21 @@ namespace MetaWear
         public IAccelerometer GetAccelerometer (IBoard board)
         {
             return metaWearManager.GetAccelerometer (board);
+        }
+
+        public IMagnetometer GetMagnetometer (IBoard board)
+        {
+            return metaWearManager.GetMagnetometer (board);
+        }
+
+        public IGyro GetGyro (IBoard board)
+        {
+            return metaWearManager.GetGyro (board);
+        }
+
+        public ILight GetLight (IBoard board)
+        {
+            return metaWearManager.GetLight (board);
         }
     }
 }

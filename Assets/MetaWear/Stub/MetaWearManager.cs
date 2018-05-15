@@ -1,11 +1,9 @@
-﻿namespace MetaWear.Stub
+﻿using MetaWear.Sensors;
+
+namespace MetaWear.Stub
 {
     public class MetaWearManager : IMetaWearManager
     {
-        public void ScanDevices (IDeviceHandler deviceHandler, long timeout)
-        {
-        }
-
         public IBoard GetBoard (BluetoothDevice bluetoothDevice)
         {
             return new Board ();
@@ -23,6 +21,21 @@
         public IAccelerometer GetAccelerometer (IBoard board)
         {
             return new Accelerometer ();
+        }
+
+        public IMagnetometer GetMagnetometer (IBoard board)
+        {
+            return new Magnetometer ();
+        }
+
+        public IGyro GetGyro (IBoard board)
+        {
+            return new Gyro ();
+        }
+
+        public ILight GetLight (IBoard board)
+        {
+            return new Light ();
         }
     }
 }
