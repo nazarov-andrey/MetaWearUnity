@@ -42,6 +42,8 @@ public class EntryPoint : MonoBehaviour, IDeviceHandler, IAccelerometerHandler
         board.Connected += BoardOnConnected;
         board.Failed += BoardOnFailed;
         board.UnexpectedDisconnect += BoardOnUnexpectedDisconnect;
+
+        manager.ConnectoToTheBoard (board);
     }
 
     private void BoardOnUnexpectedDisconnect (object sender, EventArgs e)
