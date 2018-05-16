@@ -1,4 +1,5 @@
-﻿using MetaWear.Sensors;
+﻿using System;
+using MetaWear.Sensors;
 using UnityEngine;
 
 namespace MetaWear
@@ -13,6 +14,11 @@ namespace MetaWear
                 metaWearManager = new Android.MetaWearManager ();
             else
                 metaWearManager = new Stub.MetaWearManager();
+        }
+
+        public void Init (Action initializedCallback)
+        {
+            metaWearManager.Init (initializedCallback);
         }
 
         public IBoard GetBoard (BluetoothDevice bluetoothDevice)

@@ -1,9 +1,12 @@
-﻿using MetaWear.Sensors;
+﻿using System;
+using MetaWear.Sensors;
 
 namespace MetaWear
 {
     public interface IMetaWearManager
     {
+        void Init (Action initializedCallback);
+        
         IBoard GetBoard (BluetoothDevice bluetoothDevice);
         IBoard GetBoard (string macAddress);
         void ConnectoToTheBoard (IBoard board);

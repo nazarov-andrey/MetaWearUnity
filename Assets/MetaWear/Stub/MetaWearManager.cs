@@ -1,9 +1,15 @@
-﻿using MetaWear.Sensors;
+﻿using System;
+using MetaWear.Sensors;
 
 namespace MetaWear.Stub
 {
     public class MetaWearManager : IMetaWearManager
     {
+        public void Init (Action initializedCallback)
+        {
+            initializedCallback ();
+        }
+
         public IBoard GetBoard (BluetoothDevice bluetoothDevice)
         {
             return new Board ();
