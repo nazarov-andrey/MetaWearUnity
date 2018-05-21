@@ -8,10 +8,10 @@ namespace MetaWear
     {
         private IMetaWearManager metaWearManager;
 
-        public MetaWearManager ()
+        public MetaWearManager (bool loggable)
         {
             if (Application.platform == RuntimePlatform.Android)
-                metaWearManager = new Android.MetaWearManager ();
+                metaWearManager = new Android.MetaWearManager (loggable);
             else
                 metaWearManager = new Stub.MetaWearManager();
         }

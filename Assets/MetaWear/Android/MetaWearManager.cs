@@ -9,12 +9,19 @@ namespace MetaWear.Android
     {
         private static string TAG = "Android.MetaWearManager";
         private AndroidJavaObject manager;
+        private bool loggable;
 
-        public MetaWearManager ()
+        public MetaWearManager (bool loggable)
         {
-            Debug.unityLogger.Log (TAG, "MetaWearManager.ctor");
+            Log ("MetaWearManager.ctor");
         }
-        
+
+        private void Log (object message)
+        {
+            if (loggable)
+                Debug.unityLogger.Log (TAG, message);
+        }
+
         private void AssetInitialized ()
         {
             Assert.IsNotNull (manager, "Call Init first");
@@ -22,14 +29,15 @@ namespace MetaWear.Android
 
         public void Init (Action initializedCallback)
         {
-            Debug.unityLogger.Log (TAG, "MetaWearManager.Init");
-            
+            Log ("MetaWearManager.Init");
+
             AndroidJavaClass jc = new AndroidJavaClass ("com.unity3d.player.UnityPlayer");
             AndroidJavaObject activity = jc.GetStatic<AndroidJavaObject> ("currentActivity");
             manager = new AndroidJavaObject (
                 "de.horizont.metawearunity.MetaWearManager",
                 activity,
-                new AndroidJavaRunnable (initializedCallback));
+                new AndroidJavaRunnable (initializedCallback),
+                loggable);
         }
 
         public IBoard GetBoard (BluetoothDevice bluetoothDevice)
@@ -40,7 +48,7 @@ namespace MetaWear.Android
         public IBoard GetBoard (string macAddress)
         {
             AssetInitialized ();
-            
+
             Debug.unityLogger.Log (TAG, "GetBoard");
             return new Board (manager.Call<AndroidJavaObject> ("GetBoard", macAddress));
         }
@@ -48,8 +56,8 @@ namespace MetaWear.Android
         public void ConnectoToTheBoard (IBoard board)
         {
             AssetInitialized ();
-            
-            Debug.unityLogger.Log (TAG, "ConnectoToTheBoard");
+
+            Log ("ConnectoToTheBoard");
 
             Board androidBoard = GetBoard (board);
 
@@ -62,8 +70,8 @@ namespace MetaWear.Android
         public IAccelerometer GetAccelerometer (IBoard board)
         {
             AssetInitialized ();
-            
-            Debug.unityLogger.Log (TAG, "GetAccelerometer");
+
+            Log ("GetAccelerometer");
 
             return new Accelerometer (
                 manager.Call<AndroidJavaObject> ("GetAcceleromenter", GetBoard (board).NativeBoard));
@@ -72,7 +80,7 @@ namespace MetaWear.Android
         public IMagnetometer GetMagnetometer (IBoard board)
         {
             AssetInitialized ();
-            
+
             return new Magnetometer (
                 manager.Call<AndroidJavaObject> ("GetMagnetometer", GetBoard (board).NativeBoard));
         }
@@ -80,7 +88,7 @@ namespace MetaWear.Android
         public IGyro GetGyro (IBoard board)
         {
             AssetInitialized ();
-            
+
             return new Gyro (
                 manager.Call<AndroidJavaObject> ("GetGyro", GetBoard (board).NativeBoard));
         }
@@ -88,7 +96,7 @@ namespace MetaWear.Android
         public ILight GetLight (IBoard board)
         {
             AssetInitialized ();
-            
+
             return new Light (
                 manager.Call<AndroidJavaObject> ("GetLight", GetBoard (board).NativeBoard));
         }
@@ -96,7 +104,7 @@ namespace MetaWear.Android
         private Board GetBoard (IBoard board)
         {
             AssetInitialized ();
-            
+
             var androidBoard = board as Board;
             Assert.IsNotNull (androidBoard);
 

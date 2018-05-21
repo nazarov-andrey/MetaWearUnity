@@ -21,7 +21,7 @@ public class EntryPoint : MonoBehaviour, IAccelerometerHandler
 
     private void Awake ()
     {
-        manager = new MetaWearManager ();
+        manager = new MetaWearManager (false);
     }
 
     public void Connect ()
